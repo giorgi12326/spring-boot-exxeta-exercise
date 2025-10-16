@@ -38,4 +38,5 @@ public class Config {
             productRepository.save(product3);
         };
     }
+
 }
