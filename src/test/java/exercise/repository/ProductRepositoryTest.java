@@ -1,10 +1,13 @@
 package exercise.repository;
 
 import exercise.entity.Product;
+import exercise.security.JwtAuthenticationFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -17,8 +20,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DataJpaTest
 @Testcontainers
+@DataJpaTest(excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
+                classes = JwtAuthenticationFilter.class))
 public class ProductRepositoryTest {
 
     @Autowired
@@ -32,6 +36,7 @@ public class ProductRepositoryTest {
             .withDatabaseName("testdb")
             .withUsername("postgres")
             .withPassword("yourpassword");
+
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
