@@ -20,6 +20,7 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductBetweenPeriod(
             @RequestParam(required = false) Integer startYear,
             @RequestParam(required = false) Integer endYear){
+        System.out.println("got INININ");
         return ResponseEntity.ok(productService.getProductsBetweenYears(startYear,endYear));
     }
 

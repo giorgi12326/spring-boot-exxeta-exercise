@@ -4,12 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exercise.dto.ProductDTO;
 import exercise.entity.Product;
-import exercise.entity.Role;
-import exercise.entity.User;
+import exercise.feign.UserClient;
 import exercise.repository.ProductRepository;
-import exercise.repository.UserRepository;
 import exercise.security.JwtUtil;
-import exercise.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +42,7 @@ class ProductIntegrationTest {
     private Product product;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserClient userClient;
 
     private String adminToken;
     private String sellerToken;
@@ -86,24 +83,24 @@ class ProductIntegrationTest {
         sellerToken = jwtUtil.generateToken("seller");
         customerToken = jwtUtil.generateToken("customer");
 
-        userRepository.deleteAll();
+        userClient.deleteAll();
         User admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .role(Role.ADMIN).build();
-        userRepository.save(admin);
+        userClient.save(admin);
 
         User seller = User.builder()
                 .username("seller")
                 .password(passwordEncoder.encode("seller"))
                 .role(Role.SELLER).build();
-        userRepository.save(seller);
+        userClient.save(seller);
 
         User customer = User.builder()
                 .username("customer")
                 .password(passwordEncoder.encode("customer"))
                 .role(Role.CUSTOMER).build();
-        userRepository.save(customer);
+        userClient.save(customer);
 
         productRepository.deleteAll();
 

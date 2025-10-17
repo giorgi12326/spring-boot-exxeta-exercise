@@ -4,6 +4,7 @@ import exercise.entity.Product;
 import exercise.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableFeignClients(basePackages = "exercise")
 public class Config {
     private final ProductRepository productRepository;
     @Bean
