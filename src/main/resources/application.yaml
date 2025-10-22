@@ -3,6 +3,5 @@ server:
 
 user:
   service:
-    url:
-      localhost:8081
+    url: ${PRODUCT_SERVICE_URL:http://localhost:8081}
 
