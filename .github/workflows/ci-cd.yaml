@@ -1,0 +1,25 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          docker build -t user-service-image:$COMMIT_HASH .
+          docker tag user-service-image:$COMMIT_HASH user-service-image:latest
+    
+
+      - name: Deploy to Minikube
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          kubectl set image deployment/user-service-deployment \
+            user-service=user-service-image:$COMMIT_HASH

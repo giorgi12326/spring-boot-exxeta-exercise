@@ -26,8 +26,5 @@ public class Product {
 
     private LocalDate createdAt;
 
-//    @PrePersist
-//    public void prePersist(){
-//        createdAt = LocalDate.now();
-//    }
+
 }
