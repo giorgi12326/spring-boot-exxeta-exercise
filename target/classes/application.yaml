@@ -1,7 +1,0 @@
-server:
-  port: 8082
-
-user:
-  service:
-    url: ${USER_SERVICE_URL:http://localhost:8081}
-
