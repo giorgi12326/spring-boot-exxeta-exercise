@@ -14,8 +14,8 @@ jobs:
       - name: Build Docker image
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
-          docker build -t user-service-image:$COMMIT_HASH .
-          docker tag user-service-image:$COMMIT_HASH user-service-image:latest
+          docker build -t product-service-image:$COMMIT_HASH .
+          docker tag product-service-image:$COMMIT_HASH product-service-image:latest
           
       - name: Install kubectl
         run: |
@@ -26,5 +26,5 @@ jobs:
       - name: Deploy to Minikube
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
-          kubectl set image deployment/user-service-deployment \
-            user-service=user-service-image:$COMMIT_HASH
+          kubectl set image deployment/product-service-deployment \
+            product-service=product-service-image:$COMMIT_HASH
