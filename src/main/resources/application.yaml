@@ -5,3 +5,12 @@ user:
   service:
     url: ${USER_SERVICE_URL:http://localhost:8081}
 
+spring:
+  kafka:
+    bootstrap-servers: kafka-0.kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    template:
+      default-topic: test-topic
+
