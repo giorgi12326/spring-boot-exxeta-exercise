@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponseDTO> handleResourceNotFound(AuthenticationException ex) {
         ErrorResponseDTO errorResponse = ErrorResponseDTO
