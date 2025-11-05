@@ -26,5 +26,5 @@ public class Product {
 
     private LocalDate createdAt;
 
-
+    private Long userId;
 }
