@@ -37,7 +37,7 @@ class ProductServiceTest {
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productRepository, productMapper);
+        productService = new ProductService(productRepository, productMapper,null);
 
         product1 = new Product();
         product1.setId(1L);

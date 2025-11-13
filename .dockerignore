@@ -1,0 +1,13 @@
+# Ignore build output
+target/
+
+# Ignore Git metadata
+.git
+
+# Ignore IDE/editor files
+.idea
+*.iml
+.vscode
+
+# Optional: ignore logs, temp files
+*.log

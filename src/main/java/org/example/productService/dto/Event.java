@@ -1,0 +1,16 @@
+package org.example.productService.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Event {
+    private Long id;
+    private EventType eventType;
+    private Instant timestamp;
+}
