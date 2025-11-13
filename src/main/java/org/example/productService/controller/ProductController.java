@@ -5,6 +5,7 @@ import org.example.productService.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ProductController {
-
     public final ProductService productService;
 
     @GetMapping("/{id}")
