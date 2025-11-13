@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +47,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
-        Event event = new Event(id, EventType.DELETED, LocalDateTime.now());
+        Event event = new Event(id, EventType.DELETED, Instant.now());
         kafkaTemplate.send("product-event", event);
     }
 
