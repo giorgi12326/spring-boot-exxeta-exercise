@@ -47,7 +47,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
-        Event event = new Event(id, EventType.DELETED, Instant.now());
+        Event event = new Event(EventType.DELETED, Instant.now(),id);
         kafkaTemplate.send("product-event", event);
     }
 
