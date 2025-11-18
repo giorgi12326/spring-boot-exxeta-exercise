@@ -23,7 +23,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(corss -> corss.configurationSource(request -> {
+                .cors(cors1 -> cors1.configurationSource(request -> {
                     var cors = new CorsConfiguration();
                     cors.setAllowedOrigins(java.util.List.of("http://127.0.0.1:5500")); // your frontend
                     cors.setAllowedMethods(java.util.List.of("GET","POST","PUT","DELETE","OPTIONS"));
@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         request ->
                     request
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/**").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.POST,"/api/**").hasRole("SELLER")
                         .requestMatchers(HttpMethod.DELETE,"/api/**").hasRole("ADMIN")
