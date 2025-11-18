@@ -29,18 +29,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
 
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         try {
 
             if (authorization != null && authorization.startsWith("Bearer ")) {
                 String token = authorization.substring(7);
 
                 String username = jwtUtil.getUsernameFromToken(token);
-//                FullUserDTO user = userClient.getUserByUsername(username);
-                UserDetails build = User.builder().username("giorgi").password("$2a$10$AusCwQH4VD9B88WFKuOX3u0mzk5nOcfM27L/O2M/1RjyJrC3PiOAu").roles(Role.ADMIN.name()).build();
+                FullUserDTO user = userClient.getUserByUsername(username);
+                System.out.println(user);
+                UserDetails build = User.builder().username(user.getUsername()).password(user.getPassword()).roles(user.getRole().name()).build();
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(build, null, build.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -49,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         }
-         catch (ExpiredJwtException e) {
+        catch (ExpiredJwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"JWT Token expired\"}");
