@@ -34,7 +34,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request ->
-                    request.anyRequest().authenticated()
+                    request
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // <-- important for preflight
+                        .requestMatchers(HttpMethod.GET,"/api/**").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST,"/api/**").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.DELETE,"/api/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
