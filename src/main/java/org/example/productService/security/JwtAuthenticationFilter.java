@@ -1,6 +1,7 @@
 package org.example.productService.security;
 
 import org.example.productService.dto.FullUserDTO;
+import org.example.productService.entity.Role;
 import org.example.productService.feign.UserClient;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -38,8 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String token = authorization.substring(7);
 
                 String username = jwtUtil.getUsernameFromToken(token);
-                FullUserDTO user = userClient.getUserByUsername(username);
-                UserDetails build = User.builder().username(user.getUsername()).password(user.getPassword()).roles(user.getRole().name()).build();
+//                FullUserDTO user = userClient.getUserByUsername(username);
+                UserDetails build = User.builder().username("giorgi").password("$2a$10$AusCwQH4VD9B88WFKuOX3u0mzk5nOcfM27L/O2M/1RjyJrC3PiOAu").roles(Role.ADMIN.name()).build();
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(build, null, build.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
