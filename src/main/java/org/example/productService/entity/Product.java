@@ -27,4 +27,9 @@ public class Product {
     private LocalDate createdAt;
 
     private Long userId;
+
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDate.now();
+    }
 }
