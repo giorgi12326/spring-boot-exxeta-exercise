@@ -20,11 +20,9 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of(
@@ -36,12 +34,15 @@ public class SecurityConfig {
                     config.setAllowCredentials(true);
                     return config;
                 }))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // important for preflight
-                        .requestMatchers(HttpMethod.GET, "/api/**").hasRole("CUSTOMER")
-                        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("SELLER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(
+                        request ->
+                                request
+                                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // <-- FIX
+                                        .requestMatchers(HttpMethod.GET,"/api/**").hasRole("CUSTOMER")
+                                        .requestMatchers(HttpMethod.POST,"/api/**").hasRole("SELLER")
+                                        .requestMatchers(HttpMethod.DELETE,"/api/**").hasRole("ADMIN")
+                                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
