@@ -21,26 +21,18 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://127.0.0.1:5500"));
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    config.setAllowedHeaders(List.of("*"));
-                    config.setAllowCredentials(true);
-                    return config;
-                }))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // important for preflight
-                        .requestMatchers(HttpMethod.GET, "/api/**").hasRole("CUSTOMER")
-                        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("SELLER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests(
+                        request ->
+                                request.requestMatchers("/**").permitAll()
+
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        ;
 
         return http.build();
     }
