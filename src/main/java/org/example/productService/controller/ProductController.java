@@ -34,7 +34,9 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductBetweenPeriod(
             @RequestParam(required = false) Integer startYear,
             @RequestParam(required = false) Integer endYear){
-        return ResponseEntity.ok(productService.getProductsBetweenYears(startYear,endYear));
+        List<ProductDTO> productsBetweenYears = productService.getProductsBetweenYears(startYear, endYear);
+        System.out.println(productsBetweenYears);
+        return ResponseEntity.ok(productsBetweenYears);
     }
 
     @PostMapping
