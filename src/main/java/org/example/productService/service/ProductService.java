@@ -47,7 +47,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
-        Event event = new Event(id, EventType.DELETED, Instant.now());
+        Event event = new Event(EventType.DELETED, Instant.now(),id);
         kafkaTemplate.send("product-event", event);
     }
 
@@ -74,8 +74,12 @@ public class ProductService {
         return productMapper.toDTO(byId);
     }
 
+    public List<ProductDTO> getProductsById(List<Long> id) {
+        List<Product> byId = productRepository.findAllById(id);
+        return productMapper.toDTOs(byId);
+    }
+
     public boolean existsById(Long id) {
-        System.out.println("asd");
         return productRepository.existsById(id);
     }
 }

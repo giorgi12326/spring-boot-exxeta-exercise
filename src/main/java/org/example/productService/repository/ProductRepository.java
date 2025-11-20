@@ -15,4 +15,5 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     List<Product> findByCreatedAtAfter(LocalDate start);
     List<Product> findByCreatedAtBefore(LocalDate end);
 
+
 }

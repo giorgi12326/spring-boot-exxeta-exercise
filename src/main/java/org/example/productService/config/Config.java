@@ -20,6 +20,7 @@ public class Config {
             Product product = Product.builder()
                     .name("Product 1")
                     .description("Product 1")
+                    .price(30f)
                     .createdAt(LocalDate.of(2021,1,2))
                     .build();
             productRepository.save(product);
@@ -27,6 +28,7 @@ public class Config {
             Product product1 = Product.builder()
                     .name("Product 2")
                     .description("Product 2")
+                    .price(10f)
                     .createdAt(LocalDate.of(2021,1,1))
                     .build();
             productRepository.save(product1);
@@ -34,6 +36,7 @@ public class Config {
             Product product3 = Product.builder()
                     .name("Product 3")
                     .description("Product 3")
+                    .price(100f)
                     .createdAt(LocalDate.of(2021,12,31))
                     .build();
             productRepository.save(product3);

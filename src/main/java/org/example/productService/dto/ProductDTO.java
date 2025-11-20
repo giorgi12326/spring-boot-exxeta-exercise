@@ -18,6 +18,8 @@ public class ProductDTO {
 
     String description;
 
+    Float price;
+
     LocalDate createdAt;
 
 }
