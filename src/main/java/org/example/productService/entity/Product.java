@@ -26,6 +26,8 @@ public class Product {
 
     private LocalDate createdAt;
 
+    private Float price;
+
     private Long userId;
 
     @PrePersist

@@ -74,8 +74,12 @@ public class ProductService {
         return productMapper.toDTO(byId);
     }
 
+    public List<ProductDTO> getProductsById(List<Long> id) {
+        List<Product> byId = productRepository.findAllById(id);
+        return productMapper.toDTOs(byId);
+    }
+
     public boolean existsById(Long id) {
-        System.out.println("asd");
         return productRepository.existsById(id);
     }
 }
