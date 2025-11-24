@@ -13,6 +13,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class ProductDTO {
+
+    Long id;
+
     @NotNull
     String name;
 
@@ -21,6 +24,8 @@ public class ProductDTO {
     Float price;
 
     Integer quantity;
+
+    Long userId;
 
     LocalDate createdAt;
 
