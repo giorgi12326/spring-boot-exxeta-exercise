@@ -1,8 +1,8 @@
 package org.example.productService.mapper;
 
 import org.example.productService.dto.ProductDTO;
+import org.example.productService.dto.ReserveResponseDTO;
 import org.example.productService.entity.Product;
-import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -23,4 +23,7 @@ public interface ProductMapper {
     ProductDTO toDTO(Product product);
 
     List<ProductDTO> toDTOs(List<Product> products);
+
+    ReserveResponseDTO toReserveResponse(Product save);
+    List<ReserveResponseDTO> toReserveResponses(List<Product> saves);
 }

@@ -26,7 +26,9 @@ public class Product {
 
     private LocalDate createdAt;
 
-    private Float price;
+    Integer quantity;
+
+    Float price;
 
     private Long userId;
 
