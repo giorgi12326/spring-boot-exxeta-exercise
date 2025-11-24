@@ -41,7 +41,7 @@ public class ProductController {
         return ResponseEntity.ok(productsBetweenYears);
     }
 
-    @PostMapping("/api/reserve")
+    @PostMapping("/reserve")
     ResponseEntity<List<ReserveResponseDTO>> getAndReserveProducts(@RequestBody List<ReserveProductDTO> reserveProductDTO){
         return ResponseEntity.ok(productService.getAndReserveProducts(reserveProductDTO));
     }
