@@ -17,6 +17,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     List<Product> findByCreatedAtAfter(LocalDate start);
     List<Product> findByCreatedAtBefore(LocalDate end);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Product> findProductById(Long id);
 }
