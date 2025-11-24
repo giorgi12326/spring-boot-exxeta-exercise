@@ -20,6 +20,8 @@ public class ProductDTO {
 
     Float price;
 
+    Integer quantity;
+
     LocalDate createdAt;
 
 }
