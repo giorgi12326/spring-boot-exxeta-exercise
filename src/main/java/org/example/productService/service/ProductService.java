@@ -72,7 +72,8 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + id));
+        productRepository.delete(product);
         Event event = new Event(EventType.DELETED, Instant.now(),id);
         kafkaTemplate.send("product-event", event);
     }
