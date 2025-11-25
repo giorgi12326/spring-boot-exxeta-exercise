@@ -13,10 +13,19 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class ProductDTO {
+
+    Long id;
+
     @NotNull
     String name;
 
     String description;
+
+    Float price;
+
+    Integer quantity;
+
+    Long userId;
 
     LocalDate createdAt;
 

@@ -1,6 +1,7 @@
 package org.example.productService.security;
 
 import org.example.productService.dto.FullUserDTO;
+import org.example.productService.entity.Role;
 import org.example.productService.feign.UserClient;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -35,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 String username = jwtUtil.getUsernameFromToken(token);
                 FullUserDTO user = userClient.getUserByUsername(username);
+                System.out.println(user);
                 UserDetails build = User.builder().username(user.getUsername()).password(user.getPassword()).roles(user.getRole().name()).build();
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(build, null, build.getAuthorities());
@@ -44,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         }
-         catch (ExpiredJwtException e) {
+        catch (ExpiredJwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"JWT Token expired\"}");

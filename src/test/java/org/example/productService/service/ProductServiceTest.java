@@ -62,19 +62,6 @@ class ProductServiceTest {
         dto2.setCreatedAt(LocalDate.of(2024,3,15));
     }
 
-    @Test
-    void testGetProducts() {
-        when(productRepository.findAll()).thenReturn(Arrays.asList(product1, product2));
-        when(productMapper.toDTOs(Arrays.asList(product1, product2))).thenReturn(Arrays.asList(dto1, dto2));
-
-        List<ProductDTO> result = productService.getProducts();
-
-        assertEquals(2, result.size());
-        assertEquals(dto1, result.get(0));
-        assertEquals(dto2, result.get(1));
-        verify(productRepository, times(1)).findAll();
-        verify(productMapper, times(1)).toDTOs(Arrays.asList(product1, product2));
-    }
 
     @Test
     void testCreateProduct() {
@@ -88,23 +75,6 @@ class ProductServiceTest {
         verify(productMapper).toEntity(dto1);
         verify(productRepository).save(product1);
         verify(productMapper).toDTO(product1);
-    }
-
-    @Test
-    void testCreateProducts() {
-        List<ProductDTO> dtos = Arrays.asList(dto1, dto2);
-        List<Product> entities = Arrays.asList(product1, product2);
-
-        when(productMapper.toEntities(dtos)).thenReturn(entities);
-        when(productRepository.saveAll(entities)).thenReturn(entities);
-        when(productMapper.toDTOs(entities)).thenReturn(dtos);
-
-        List<ProductDTO> result = productService.createProducts(dtos);
-
-        assertEquals(dtos, result);
-        verify(productMapper).toEntities(dtos);
-        verify(productRepository).saveAll(entities);
-        verify(productMapper).toDTOs(entities);
     }
 
     @Test

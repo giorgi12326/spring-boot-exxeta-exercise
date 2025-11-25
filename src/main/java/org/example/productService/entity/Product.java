@@ -26,5 +26,14 @@ public class Product {
 
     private LocalDate createdAt;
 
+    Integer quantity;
+
+    Float price;
+
     private Long userId;
+
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDate.now();
+    }
 }

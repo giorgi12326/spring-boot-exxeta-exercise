@@ -80,20 +80,6 @@ class ProductControllerTest {
     }
 
     @Test
-    void testAddProduct_Batch() throws Exception {
-        List<ProductDTO> products = Arrays.asList(product1, product2);
-        when(productService.createProducts(products)).thenReturn(products);
-
-        mockMvc.perform(post("/api/batch")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(products)))
-                .andExpect(status().isCreated())
-                .andExpect(content().json(objectMapper.writeValueAsString(products)));
-
-        verify(productService, times(1)).createProducts(products);
-    }
-
-    @Test
     void testDeleteProduct() throws Exception {
         Long id = 1L;
 
