@@ -7,7 +7,10 @@ import org.example.productService.mapper.ProductMapper;
 import org.example.productService.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.productService.security.CustomUserDetails;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -70,6 +73,8 @@ public class ProductService {
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product entity = productMapper.toEntity(productDTO);
+        CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        entity.setUserId(user.getId());
         Product save = productRepository.save(entity);
         return productMapper.toDTO(save);
     }
