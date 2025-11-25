@@ -35,6 +35,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAndReserveProducts(reserveProductDTO));
     }
 
+    @PostMapping("/reserve/compensate")
+    ResponseEntity<Void> compensateReserveProducts(@RequestBody List<ReserveProductDTO> reserveProductDTO){
+        productService.releaseProducts(reserveProductDTO);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
     public ResponseEntity<ProductDTO> addProduct(@RequestBody @Valid ProductDTO productDTO){
         return ResponseEntity.status(201).body(productService.createProduct(productDTO));

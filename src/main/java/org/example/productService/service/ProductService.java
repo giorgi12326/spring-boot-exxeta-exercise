@@ -69,6 +69,18 @@ public class ProductService {
 
         return reserveList;
     }
+    @Transactional
+    public void releaseProducts(List<ReserveProductDTO> reserveProductDTO) {
+        System.out.println("daballes?");
+        List<Product> productList = new ArrayList<>();
+        for (ReserveProductDTO dto : reserveProductDTO) {
+            Product product = productRepository.findProductById(dto.getProductId())
+                    .orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + dto.getProductId()));
+            product.setQuantity(product.getQuantity() + dto.getQuantity());
+            productList.add(product);
+        }
+        productRepository.saveAll(productList);
+    }
 
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) {
