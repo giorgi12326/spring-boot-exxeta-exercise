@@ -48,7 +48,8 @@ public class ProductService {
 
     @Transactional
     public List<ReserveResponseDTO> getAndReserveProducts(List<ReserveProductDTO> reserveProductDTO) {
-        List<Product> dtos = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
+        List<ReserveResponseDTO> reserveList = new ArrayList<>();
         for(ReserveProductDTO productDTO : reserveProductDTO) {
             Product product = productRepository.findProductById(productDTO.getProductId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getProductId()));
             if(product.getQuantity()-productDTO.getQuantity() >= 0)
@@ -56,11 +57,14 @@ public class ProductService {
             else
                 throw new IllegalStateException("Not enough stock for product " + product.getId());
 
-            dtos.add(product);
+            productList.add(product);
+            ReserveResponseDTO reserveResponse = productMapper.toReserveResponse(product);
+            reserveResponse.setQuantity(productDTO.getQuantity());
+            reserveList.add(reserveResponse);
         }
-        List<Product> products = productRepository.saveAll(dtos);
+        productRepository.saveAll(productList);
 
-        return productMapper.toReserveResponses(products);
+        return reserveList;
     }
 
     @Transactional
