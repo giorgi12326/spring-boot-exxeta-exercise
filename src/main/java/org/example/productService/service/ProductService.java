@@ -50,7 +50,7 @@ public class ProductService {
     public List<ReserveResponseDTO> getAndReserveProducts(List<ReserveProductDTO> reserveProductDTO) {
         List<Product> dtos = new ArrayList<>();
         for(ReserveProductDTO productDTO : reserveProductDTO) {
-            Product product = productRepository.findProductById(productDTO.getId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getId()));
+            Product product = productRepository.findProductById(productDTO.getProductId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getProductId()));
             if(product.getQuantity()-productDTO.getQuantity() >= 0)
                 product.setQuantity(product.getQuantity()-productDTO.getQuantity());
             else

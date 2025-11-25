@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-25T09:11:20+0400",
+    date = "2025-11-25T16:10:48+0400",
     comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.15 (Eclipse Adoptium)"
 )
 @Component
@@ -90,8 +90,11 @@ public class ProductMapperImpl implements ProductMapper {
 
         ReserveResponseDTO reserveResponseDTO = new ReserveResponseDTO();
 
-        reserveResponseDTO.setId( save.getId() );
+        reserveResponseDTO.setProductId( save.getId() );
+        reserveResponseDTO.setProductName( save.getName() );
+        reserveResponseDTO.setProductDescription( save.getDescription() );
         reserveResponseDTO.setQuantity( save.getQuantity() );
+        reserveResponseDTO.setPrice( save.getPrice() );
 
         return reserveResponseDTO;
     }
