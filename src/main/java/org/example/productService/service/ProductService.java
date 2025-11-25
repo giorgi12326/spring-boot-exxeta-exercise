@@ -22,30 +22,10 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final KafkaTemplate<String, Event> kafkaTemplate;
 
-    public List<ProductDTO> getProducts() {
-        List<Product> all = productRepository.findAll();
-        return productMapper.toDTOs(all);
-    }
 
-    @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO) {
-        Product entity = productMapper.toEntity(productDTO);
-        Product save = productRepository.save(entity);
-        return productMapper.toDTO(save);
-    }
-
-    @Transactional
-    public List<ProductDTO> createProducts(List<ProductDTO> productDTOs) {
-        List<Product> entities = productMapper.toEntities(productDTOs);
-        List<Product> products = productRepository.saveAll(entities);
-        return productMapper.toDTOs(products);
-    }
-
-    @Transactional
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
-        Event event = new Event(EventType.DELETED, Instant.now(),id);
-        kafkaTemplate.send("product-event", event);
+    public ProductDTO getProductById(Long id) {
+        Product byId = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("productNotFound"));
+        return productMapper.toDTO(byId);
     }
 
     public List<ProductDTO> getProductsBetweenYears(Integer startYear, Integer endYear) {
@@ -66,25 +46,11 @@ public class ProductService {
         return productMapper.toDTOs(products);
     }
 
-    public ProductDTO getProductById(Long id) {
-        Product byId = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("productNotFound"));
-        return productMapper.toDTO(byId);
-    }
-
-    public List<ProductDTO> getProductsById(List<Long> id) {
-        List<Product> byId = productRepository.findAllById(id);
-        return productMapper.toDTOs(byId);
-    }
-
-    public boolean existsById(Long id) {
-        return productRepository.existsById(id);
-    }
-
     @Transactional
     public List<ReserveResponseDTO> getAndReserveProducts(List<ReserveProductDTO> reserveProductDTO) {
         List<Product> dtos = new ArrayList<>();
         for(ReserveProductDTO productDTO : reserveProductDTO) {
-            Product product= productRepository.findProductById(productDTO.getProductId()).orElseThrow(() -> new ResourceNotFoundException("productNotFound"));
+            Product product = productRepository.findProductById(productDTO.getId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getId()));
             if(product.getQuantity()-productDTO.getQuantity() >= 0)
                 product.setQuantity(product.getQuantity()-productDTO.getQuantity());
             else
@@ -95,5 +61,19 @@ public class ProductService {
         List<Product> products = productRepository.saveAll(dtos);
 
         return productMapper.toReserveResponses(products);
+    }
+
+    @Transactional
+    public ProductDTO createProduct(ProductDTO productDTO) {
+        Product entity = productMapper.toEntity(productDTO);
+        Product save = productRepository.save(entity);
+        return productMapper.toDTO(save);
+    }
+
+    @Transactional
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+        Event event = new Event(EventType.DELETED, Instant.now(),id);
+        kafkaTemplate.send("product-event", event);
     }
 }

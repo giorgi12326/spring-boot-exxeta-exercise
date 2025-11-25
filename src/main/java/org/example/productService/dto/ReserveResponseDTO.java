@@ -7,6 +7,4 @@ public class ReserveResponseDTO {
     Long id;
 
     Integer quantity;
-
-    Float price;
 }

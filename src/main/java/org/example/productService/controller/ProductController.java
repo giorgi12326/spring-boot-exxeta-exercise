@@ -22,22 +22,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @PostMapping("/by-ids")
-    public ResponseEntity<List<ProductDTO>> getProductsByID(@RequestBody List<Long> ids) {
-        return ResponseEntity.ok(productService.getProductsById(ids));
-    }
-
-    @GetMapping("/{id}/exists")
-    public boolean existsById(@PathVariable("id") Long id) {
-        return productService.existsById(id);
-    }
-
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getProductBetweenPeriod(
             @RequestParam(required = false) Integer startYear,
             @RequestParam(required = false) Integer endYear){
         List<ProductDTO> productsBetweenYears = productService.getProductsBetweenYears(startYear, endYear);
-        System.out.println(productsBetweenYears);
         return ResponseEntity.ok(productsBetweenYears);
     }
 
@@ -49,11 +38,6 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> addProduct(@RequestBody @Valid ProductDTO productDTO){
         return ResponseEntity.status(201).body(productService.createProduct(productDTO));
-    }
-
-    @PostMapping("/batch")
-    public ResponseEntity<List<ProductDTO>> addProducts(@RequestBody @Valid List<ProductDTO> productDTOs){
-        return ResponseEntity.status(201).body(productService.createProducts(productDTOs));
     }
 
     @DeleteMapping("/{id}")

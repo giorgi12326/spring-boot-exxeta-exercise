@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-24T15:02:47+0400",
+    date = "2025-11-24T20:43:27+0400",
     comments = "version: 1.6.3, compiler: javac, environment: Java 17.0.15 (Eclipse Adoptium)"
 )
 @Component
@@ -24,11 +24,13 @@ public class ProductMapperImpl implements ProductMapper {
 
         Product.ProductBuilder product = Product.builder();
 
+        product.id( productDTO.getId() );
         product.name( productDTO.getName() );
         product.description( productDTO.getDescription() );
         product.createdAt( productDTO.getCreatedAt() );
         product.quantity( productDTO.getQuantity() );
         product.price( productDTO.getPrice() );
+        product.userId( productDTO.getUserId() );
 
         return product.build();
     }
@@ -55,10 +57,12 @@ public class ProductMapperImpl implements ProductMapper {
 
         ProductDTO.ProductDTOBuilder productDTO = ProductDTO.builder();
 
+        productDTO.id( product.getId() );
         productDTO.name( product.getName() );
         productDTO.description( product.getDescription() );
         productDTO.price( product.getPrice() );
         productDTO.quantity( product.getQuantity() );
+        productDTO.userId( product.getUserId() );
         productDTO.createdAt( product.getCreatedAt() );
 
         return productDTO.build();
@@ -86,8 +90,8 @@ public class ProductMapperImpl implements ProductMapper {
 
         ReserveResponseDTO reserveResponseDTO = new ReserveResponseDTO();
 
+        reserveResponseDTO.setId( save.getId() );
         reserveResponseDTO.setQuantity( save.getQuantity() );
-        reserveResponseDTO.setPrice( save.getPrice() );
 
         return reserveResponseDTO;
     }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ReserveProductDTO {
-    Long productId;
+    Long id;
     Integer quantity;
 }
