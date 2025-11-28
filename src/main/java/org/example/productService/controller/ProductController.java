@@ -52,8 +52,5 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.status(204).build();
     }
-    @GetMapping("/debug")
-    public String debug() {
-        return Product.class.getDeclaredFields().toString();
-    }
+
 }
