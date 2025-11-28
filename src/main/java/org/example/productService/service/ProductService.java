@@ -7,7 +7,9 @@ import org.example.productService.mapper.ProductMapper;
 import org.example.productService.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.productService.security.CustomUserDetails;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -47,32 +49,29 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ReserveResponseDTO> getAndReserveProducts(List<ReserveProductDTO> reserveProductDTO) {
-        List<Product> dtos = new ArrayList<>();
+    public List<ReserveResponseDTO> getInfoAboutProducts(List<ReserveProductDTO> reserveProductDTO) {
+        List<ReserveResponseDTO> reserveList = new ArrayList<>();
         for(ReserveProductDTO productDTO : reserveProductDTO) {
-            Product product = productRepository.findProductById(productDTO.getId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getId()));
-            if(product.getQuantity()-productDTO.getQuantity() >= 0)
-                product.setQuantity(product.getQuantity()-productDTO.getQuantity());
-            else
-                throw new IllegalStateException("Not enough stock for product " + product.getId());
-
-            dtos.add(product);
+            Product product = productRepository.findProductById(productDTO.getProductId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getProductId()));
+            ReserveResponseDTO reserveResponse = productMapper.toReserveResponse(product);
+            reserveList.add(reserveResponse);
         }
-        List<Product> products = productRepository.saveAll(dtos);
-
-        return productMapper.toReserveResponses(products);
+        return reserveList;
     }
 
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product entity = productMapper.toEntity(productDTO);
+        CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        entity.setUserId(user.getId());
         Product save = productRepository.save(entity);
         return productMapper.toDTO(save);
     }
 
     @Transactional
     public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + id));
+        productRepository.delete(product);
         Event event = new Event(EventType.DELETED, Instant.now(),id);
         kafkaTemplate.send("product-event", event);
     }

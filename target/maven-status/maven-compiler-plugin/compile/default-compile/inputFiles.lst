@@ -14,9 +14,11 @@ C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\produc
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\security\JwtAuthenticationFilter.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\dto\ReserveResponseDTO.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\exception\ResourceNotFoundException.java
+C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\security\CustomUserDetails.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\controller\ProductController.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\security\SecurityConfig.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\entity\Product.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\dto\FullUserDTO.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\dto\EventType.java
+C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\dto\UpdateQuantityFromInventory.java
 C:\Users\gits\IdeaProjects\spring-boot-exercise\src\main\java\org\example\productService\feign\UserClient.java

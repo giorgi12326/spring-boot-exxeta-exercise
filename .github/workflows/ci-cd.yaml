@@ -11,12 +11,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: |
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-          docker build -t product-service-image:$COMMIT_HASH .
-          docker tag product-service-image:$COMMIT_HASH product-service-image:latest
-          
       - name: Install kubectl if not installed
         shell: bash
         run: |
@@ -27,10 +21,27 @@ jobs:
             sudo mv kubectl /usr/local/bin/
           else
             echo "kubectl already installed, skipping"
-          fi  
+          fi
+
+      - name: Build Docker image in Minikube
+        shell: bash
+        run: |
+          # Point Docker to Minikube's Docker daemon
+          eval $(minikube -p minikube docker-env)
+          
+          # Build and tag the image
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          docker build -t product-service-image:$COMMIT_HASH .
+          docker tag product-service-image:$COMMIT_HASH product-service-image:latest
+          
+          # Optional: verify the image exists
+          docker images | grep product-service-image
 
       - name: Deploy to Minikube
+        shell: bash
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           kubectl set image deployment/product-service-deployment \
             product-service=product-service-image:$COMMIT_HASH
+          # Optional: wait until rollout is done
+          kubectl rollout status deployment/product-service-deployment

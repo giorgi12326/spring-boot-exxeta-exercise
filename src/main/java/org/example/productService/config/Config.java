@@ -21,7 +21,7 @@ public class Config {
                     .name("Product 1")
                     .description("Product 1")
                     .price(30f)
-                    .quantity(20)
+                    .userId(1L)
                     .createdAt(LocalDate.of(2021,1,2))
                     .build();
             productRepository.save(product);
@@ -30,7 +30,7 @@ public class Config {
                     .name("Product 2")
                     .description("Product 2")
                     .price(10f)
-                    .quantity(50)
+                    .userId(1L)
                     .createdAt(LocalDate.of(2021,1,1))
                     .build();
             productRepository.save(product1);
@@ -39,7 +39,7 @@ public class Config {
                     .name("Product 3")
                     .description("Product 3")
                     .price(100f)
-                    .quantity(25)
+                    .userId(1L)
                     .createdAt(LocalDate.of(2021,12,31))
                     .build();
             productRepository.save(product3);

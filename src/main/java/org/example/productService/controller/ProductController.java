@@ -30,9 +30,9 @@ public class ProductController {
         return ResponseEntity.ok(productsBetweenYears);
     }
 
-    @PostMapping("/reserve")
+    @PostMapping("/products-info")
     ResponseEntity<List<ReserveResponseDTO>> getAndReserveProducts(@RequestBody List<ReserveProductDTO> reserveProductDTO){
-        return ResponseEntity.ok(productService.getAndReserveProducts(reserveProductDTO));
+        return ResponseEntity.ok(productService.getInfoAboutProducts(reserveProductDTO));
     }
 
     @PostMapping
@@ -45,4 +45,5 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.status(204).build();
     }
+
 }
