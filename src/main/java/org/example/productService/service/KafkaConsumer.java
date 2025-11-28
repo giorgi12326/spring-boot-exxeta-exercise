@@ -12,6 +12,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @ConditionalOnProperty(name = "kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class KafkaConsumer {
@@ -31,10 +33,25 @@ public class KafkaConsumer {
     @KafkaListener(topics = "inventory-topic", groupId = "my-group")
     @Transactional
     public void listenInventory(Event event) {
-        UpdateQuantityFromInventory payload = (UpdateQuantityFromInventory)event.getPayload();
-        Product productNotFound = productRepository.findById(payload.getProductId()).orElseThrow(() -> new ResourceNotFoundException("product not found"));
-        productNotFound.setQuantity(payload.getQuantity());
-        productRepository.save(productNotFound);
-        log.info("Updated Quantity Info From Inventory: {} {}",payload.getProductId() ,payload.getQuantity());
+        Object rawPayload = event.getPayload();
+        UpdateQuantityFromInventory payload;
+
+        if (rawPayload instanceof Map map) {
+            payload = new UpdateQuantityFromInventory();
+            payload.setProductId(((Number) map.get("productId")).longValue());
+            payload.setQuantity(((Number) map.get("quantity")).intValue());
+        } else if (rawPayload instanceof UpdateQuantityFromInventory dto) {
+            payload = dto;
+        } else {
+            throw new IllegalArgumentException("Unexpected payload type: " + rawPayload.getClass());
+        }
+
+        Product product = productRepository.findById(payload.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("product not found"));
+        product.setQuantity(payload.getQuantity());
+        productRepository.save(product);
+
+        log.info("Updated Quantity Info From Inventory: {} {}", payload.getProductId(), payload.getQuantity());
     }
+
 }
