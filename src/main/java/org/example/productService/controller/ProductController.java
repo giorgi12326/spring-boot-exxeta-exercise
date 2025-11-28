@@ -1,9 +1,8 @@
 package org.example.productService.controller;
 
 import org.example.productService.dto.ProductDTO;
-import org.example.productService.dto.UpdateQuantityFromInventory;
+import org.example.productService.dto.ReserveProductDTO;
 import org.example.productService.dto.ReserveResponseDTO;
-import org.example.productService.entity.Product;
 import org.example.productService.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +30,9 @@ public class ProductController {
         return ResponseEntity.ok(productsBetweenYears);
     }
 
-    @PostMapping("/reserve")
-    ResponseEntity<List<ReserveResponseDTO>> getAndReserveProducts(@RequestBody List<UpdateQuantityFromInventory> reserveProductDTO){
-        return ResponseEntity.ok(productService.getAndReserveProducts(reserveProductDTO));
-    }
-
-    @PostMapping("/reserve/compensate")
-    ResponseEntity<Void> compensateReserveProducts(@RequestBody List<UpdateQuantityFromInventory> reserveProductDTO){
-        productService.releaseProducts(reserveProductDTO);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/products-info")
+    ResponseEntity<List<ReserveResponseDTO>> getAndReserveProducts(@RequestBody List<ReserveProductDTO> reserveProductDTO){
+        return ResponseEntity.ok(productService.getInfoAboutProducts(reserveProductDTO));
     }
 
     @PostMapping

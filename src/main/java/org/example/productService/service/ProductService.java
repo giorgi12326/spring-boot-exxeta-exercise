@@ -49,36 +49,14 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ReserveResponseDTO> getAndReserveProducts(List<UpdateQuantityFromInventory> reserveProductDTO) {
-        List<Product> productList = new ArrayList<>();
+    public List<ReserveResponseDTO> getInfoAboutProducts(List<ReserveProductDTO> reserveProductDTO) {
         List<ReserveResponseDTO> reserveList = new ArrayList<>();
-        for(UpdateQuantityFromInventory productDTO : reserveProductDTO) {
+        for(ReserveProductDTO productDTO : reserveProductDTO) {
             Product product = productRepository.findProductById(productDTO.getProductId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getProductId()));
-            if(product.getQuantity()-productDTO.getQuantity() >= 0)
-                product.setQuantity(product.getQuantity()-productDTO.getQuantity());
-            else
-                throw new IllegalStateException("Not enough stock for product " + product.getId());
-
-            productList.add(product);
             ReserveResponseDTO reserveResponse = productMapper.toReserveResponse(product);
-            reserveResponse.setQuantity(productDTO.getQuantity());
             reserveList.add(reserveResponse);
         }
-        productRepository.saveAll(productList);
-
         return reserveList;
-    }
-
-    @Transactional
-    public void releaseProducts(List<UpdateQuantityFromInventory> reserveProductDTO) {
-        List<Product> productList = new ArrayList<>();
-        for (UpdateQuantityFromInventory dto : reserveProductDTO) {
-            Product product = productRepository.findProductById(dto.getProductId())
-                    .orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + dto.getProductId()));
-            product.setQuantity(product.getQuantity() + dto.getQuantity());
-            productList.add(product);
-        }
-        productRepository.saveAll(productList);
     }
 
     @Transactional
