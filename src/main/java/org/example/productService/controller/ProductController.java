@@ -1,7 +1,7 @@
 package org.example.productService.controller;
 
 import org.example.productService.dto.ProductDTO;
-import org.example.productService.dto.ReserveProductDTO;
+import org.example.productService.dto.UpdateQuantityFromInventory;
 import org.example.productService.dto.ReserveResponseDTO;
 import org.example.productService.service.ProductService;
 import jakarta.validation.Valid;
@@ -31,12 +31,12 @@ public class ProductController {
     }
 
     @PostMapping("/reserve")
-    ResponseEntity<List<ReserveResponseDTO>> getAndReserveProducts(@RequestBody List<ReserveProductDTO> reserveProductDTO){
+    ResponseEntity<List<ReserveResponseDTO>> getAndReserveProducts(@RequestBody List<UpdateQuantityFromInventory> reserveProductDTO){
         return ResponseEntity.ok(productService.getAndReserveProducts(reserveProductDTO));
     }
 
     @PostMapping("/reserve/compensate")
-    ResponseEntity<Void> compensateReserveProducts(@RequestBody List<ReserveProductDTO> reserveProductDTO){
+    ResponseEntity<Void> compensateReserveProducts(@RequestBody List<UpdateQuantityFromInventory> reserveProductDTO){
         productService.releaseProducts(reserveProductDTO);
         return ResponseEntity.noContent().build();
     }

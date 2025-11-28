@@ -23,8 +23,6 @@ public class ProductDTO {
 
     Float price;
 
-    Integer quantity;
-
     Long userId;
 
     LocalDate createdAt;

@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.productService.security.CustomUserDetails;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -50,10 +49,10 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ReserveResponseDTO> getAndReserveProducts(List<ReserveProductDTO> reserveProductDTO) {
+    public List<ReserveResponseDTO> getAndReserveProducts(List<UpdateQuantityFromInventory> reserveProductDTO) {
         List<Product> productList = new ArrayList<>();
         List<ReserveResponseDTO> reserveList = new ArrayList<>();
-        for(ReserveProductDTO productDTO : reserveProductDTO) {
+        for(UpdateQuantityFromInventory productDTO : reserveProductDTO) {
             Product product = productRepository.findProductById(productDTO.getProductId()).orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + productDTO.getProductId()));
             if(product.getQuantity()-productDTO.getQuantity() >= 0)
                 product.setQuantity(product.getQuantity()-productDTO.getQuantity());
@@ -69,11 +68,11 @@ public class ProductService {
 
         return reserveList;
     }
+
     @Transactional
-    public void releaseProducts(List<ReserveProductDTO> reserveProductDTO) {
-        System.out.println("daballes?");
+    public void releaseProducts(List<UpdateQuantityFromInventory> reserveProductDTO) {
         List<Product> productList = new ArrayList<>();
-        for (ReserveProductDTO dto : reserveProductDTO) {
+        for (UpdateQuantityFromInventory dto : reserveProductDTO) {
             Product product = productRepository.findProductById(dto.getProductId())
                     .orElseThrow(() -> new ResourceNotFoundException("product Not Found with ID: " + dto.getProductId()));
             product.setQuantity(product.getQuantity() + dto.getQuantity());
