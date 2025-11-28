@@ -3,6 +3,7 @@ package org.example.productService.controller;
 import org.example.productService.dto.ProductDTO;
 import org.example.productService.dto.UpdateQuantityFromInventory;
 import org.example.productService.dto.ReserveResponseDTO;
+import org.example.productService.entity.Product;
 import org.example.productService.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,9 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
         return ResponseEntity.status(204).build();
+    }
+    @GetMapping("/debug")
+    public String debug() {
+        return Product.class.getDeclaredFields().toString();
     }
 }
