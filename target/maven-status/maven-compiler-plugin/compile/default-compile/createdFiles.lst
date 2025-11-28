@@ -1,5 +1,6 @@
 org\example\productService\dto\EventType.class
 org\example\productService\controller\ProductController.class
+org\example\productService\security\CustomUserDetails$CustomUserDetailsBuilder.class
 org\example\productService\security\JwtAuthenticationFilter.class
 org\example\productService\feign\UserClient.class
 org\example\productService\security\JwtUtil.class
@@ -7,6 +8,7 @@ org\example\productService\dto\FullUserDTO$FullUserDTOBuilder.class
 org\example\productService\exception\GlobalExceptionHandler.class
 org\example\productService\entity\Role.class
 org\example\productService\dto\ReserveResponseDTO.class
+org\example\productService\dto\UpdateQuantityFromInventory.class
 org\example\productService\repository\ProductRepository.class
 org\example\productService\dto\ErrorResponseDTO.class
 org\example\productService\dto\FullUserDTO.class
@@ -17,6 +19,7 @@ org\example\productService\dto\Event.class
 org\example\productService\mapper\ProductMapperImpl.class
 org\example\productService\dto\ReserveProductDTO.class
 org\example\productService\exception\ResourceNotFoundException.class
+org\example\productService\security\CustomUserDetails.class
 org\example\productService\entity\Product.class
 org\example\productService\service\ProductService.class
 org\example\productService\security\SecurityConfig.class
